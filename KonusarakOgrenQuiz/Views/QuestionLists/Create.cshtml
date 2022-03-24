@@ -1,0 +1,61 @@
+﻿@model KonusarakOgrenQuiz.Models.QuestionList
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Questions</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddQuestion" method="post">
+
+            <div class="form-group" id="item-list">
+                <a href="#" id="add">Add</a>
+                <br />
+                <input type="text" asp-for="questions[0]" class="items" name="questions[0].Question" />
+                <input type="text" asp-for="questions[0]" class="items" name="questions[0].answer1" />
+                <input type="text" asp-for="questions[0]" class="items" name="questions[0].answer2" />
+                <input type="text" asp-for="questions[0]" class="items" name="questions[0].answer3" />
+                <input type="text" asp-for="questions[0]" class="items" name="questions[0].answer4" />
+                <input type="number" asp-for="questions[0]" class="items" name="questions[0].trueAnswer" />
+            </div>
+            <div class="form-group">
+                <label asp-for="quizId" class="control-label"></label>
+                <select asp-for="quizId" class="form-control" asp-items="ViewBag.quizId"></select>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(function () {
+        $("#add").click(function (e) {
+            e.preventDefault();
+            var i = ($(".items").length) / 6;
+            var n = '<br/>' + '<input type="text" class="items" name="questions[' + i + '].Question" />' +
+                '<input type="text" class="items" name="questions[' + i + '].answer1" />' +
+                '<br/>' +'<input type="text" class="items" name="questions[' + i + '].answer2"/>' +
+                '<br/>' +'<input type="text" class="items" name="questions[' + i + '].answer3"/>' +
+                '<br/>' +'<input type="text" class="items" name="questions[' + i + '].answer4"/>' +
+                '<br/>' +'<input type="number" class="items" name="questions[' + i + '].trueAnswer"/>'+'<br/><br/>';
+
+            $("#item-list").append(n);
+        });
+
+    });
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
