@@ -22,12 +22,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.wired.id)
+                @Html.DisplayFor(modelItem => item.wired.titles)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.id">Delete</a> |
+                <a href="QuestionLists/Create/@item.id" class="btn btn-primary btn-sm">Add Questions</a>
             </td>
         </tr>
 }

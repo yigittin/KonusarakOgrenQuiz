@@ -1,0 +1,111 @@
+﻿@model KonusarakOgrenQuiz.Models.Container
+@{
+    ViewData["Title"] = "Quiz";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>@ViewBag.WTitle</h2>
+        <p>@Html.Raw(ViewBag.WDetail)</p>
+    </div>
+</div>
+<div class="row">
+    @foreach (var items in Model.questions)
+    {
+
+        <div class="col-md-6">
+            <h2><i id="check_@items.id" class="fa-solid fa-check invisible"></i><i id="fail_@items.id" class="fa fa-times invisible" aria-hidden="true"></i>Question:</h2>
+            <h5>@items.Question</h5>
+
+            <div class="row">
+
+                <div class="col-md-6" id="question">
+                    <input type="radio" name="@items.id" class="radioClass" value="1" />
+                    <label>@items.answer1</label>
+                </div>
+                <div class="col-md-6" id="question">
+                    <input type="radio" name="@items.id" value="2" />
+                    <label>@items.answer2</label>
+
+                </div>
+                <div class="col-md-6" id="question">
+                    <input type="radio" name="@items.id" value="3" />
+                    <label>@items.answer3</label>
+                </div>
+                <div class="col-md-6" id="question">
+                    <input type="radio" name="@items.id" value="4" />
+                    <label>@items.answer4</label>
+                </div>
+            </div>
+            <input id="@items.id" type="number" name="corr" value="@items.trueAnswer" readonly style="display:none" />
+        </div>
+
+    }
+</div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center">
+        <button class="btn btn-success btn-lg flex-fill" id="submit">SUBMIT</button>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    var names = [];
+    var correct = [];
+    var ids = [];
+    @foreach(var item in Model.questions)
+    {
+        @:names.push(@item.id);
+    }
+     @foreach(var item in Model.questions)
+    {
+        @:correct.push(@item.trueAnswer);
+    }
+
+    @foreach(var item in Model.questions)
+            {
+                @:ids.push(@item.id);
+            }
+
+    let results = [];
+
+    document.querySelector("#submit").addEventListener("click", function (event) {
+        results = names.map(function (el) {
+            var isCheck = document.querySelector("input[name='" + el + "']:checked");
+            if (isCheck != null) {
+                return isCheck.value;
+            }
+            else {
+                return 0;
+            }
+        });
+
+        console.log(results);
+        console.log(correct);
+
+        for (let i = 0; i <= results.length; i++) {
+            if (results[i] == correct[i]) {
+                var qry = document.querySelector(`#check_${ids[i]}`);
+                var qry2 = document.querySelector(`#fail_${ids[i]}`);
+                qry2.removeAttribute("class");
+                qry.removeAttribute("class");
+                var attr = document.createAttribute("class");
+                attr.value="fa-solid fa-check";
+                qry.setAttributeNode(attr);
+            }
+            else {                
+                var qry = document.querySelector(`#fail_${ids[i]}`);
+                var qry2 = document.querySelector(`#check_${ids[i]}`);
+                qry2.removeAttribute("class");
+                qry.removeAttribute("class");
+                var attr = document.createAttribute("class");
+                attr.value="fa fa-times";
+                qry.setAttributeNode(attr);
+            }
+        }
+
+    });
+</script>

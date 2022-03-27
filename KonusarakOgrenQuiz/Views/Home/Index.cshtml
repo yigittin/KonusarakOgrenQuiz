@@ -1,4 +1,4 @@
-﻿@model IEnumerable<KonusarakOgrenQuiz.Models.Wired>
+﻿@model IEnumerable<KonusarakOgrenQuiz.Models.Quiz>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -22,21 +22,17 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>@item.titles</td>
-                            <td>@Html.Raw(item.smallText)</td>
-                            <td><button id="selectButton" onclick="Select(@item.id)" class="btn btn-primary" value="@item.id">Select</button></td>
-                        </tr>
+
+                            <tr>
+                                <td>@item.wired.titles</td>
+                                <td>@Html.Raw(item.wired.smallText)</td>
+                                <td><a href="QuizPage/Quiz/@item.id" class="btn btn-primary">SELECT</a></td>
+                            </tr>
+                        
+
                     }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
-    function Select(id) {
-        var href = location.origin;
-        window.location.href=`Wireds/Details/${id}`
-    }
-</script>

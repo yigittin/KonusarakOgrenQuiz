@@ -1,6 +1,42 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "WIRED UPDATE";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <h3>WIRED</h3>
+            </div>
+        </div>
+        <div class="panel-info">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Details</th>
+                        <th>Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.titles</td>
+                            <td>@Html.Raw(item.smallText)</td>
+                            <td><a href="/Quizs/Create/@item.id" class="btn btn-primary">SELECT</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function Select(id) {
+        var href = location.origin;
+        window.location.href=`Wireds/Details/${id}`
+    }
+</script>

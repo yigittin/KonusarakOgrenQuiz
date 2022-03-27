@@ -12,23 +12,22 @@ using Microsoft.AspNetCore.Authorization;
 namespace KonusarakOgrenQuiz.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
-    public class QuestionListsController : Controller
+    public class WiredsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public QuestionListsController(ApplicationDbContext context)
+        public WiredsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: QuestionLists
+        // GET: Wireds
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.questionList.Include(q => q.quiz);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Wired.ToListAsync());
         }
 
-        // GET: QuestionLists/Details/5
+        // GET: Wireds/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,60 +35,39 @@ namespace KonusarakOgrenQuiz.Controllers
                 return NotFound();
             }
 
-            var questionList = await _context.questionList
-                .Include(q => q.quiz)
+            var wired = await _context.Wired
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (questionList == null)
+            if (wired == null)
             {
                 return NotFound();
             }
 
-            return View(questionList);
+            return View(wired);
         }
-        public async Task<IActionResult> AddQuestion(QuestionList questionList)
-        {
-            
-            if (ModelState.IsValid)
-            {
 
-                foreach(var items in questionList.questions)
-                {
-                    _context.Add(items);
-                }
-                _context.Add(questionList);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
-            }
-            return View(questionList);
-        }
-        // GET: QuestionLists/Create
-        public IActionResult Create(string id)
+        // GET: Wireds/Create
+        public IActionResult Create()
         {
-            int qid = Int32.Parse(id);
-            var quizId = _context.Quiz.Where(x => x.id == qid).ToList();
-            ViewData["quizId"] = new SelectList(_context.Quiz, "id", "id");
             return View();
         }
 
-        // POST: QuestionLists/Create
+        // POST: Wireds/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,quizId")] QuestionList questionList)
+        public async Task<IActionResult> Create([Bind("id,titles,smallText,details")] Wired wired)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(questionList);
+                _context.Add(wired);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["quizId"] = new SelectList(_context.Quiz, "id", "id", questionList.quizId);
-            return View(questionList);
+            return View(wired);
         }
 
-        // GET: QuestionLists/Edit/5
+        // GET: Wireds/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,23 +75,22 @@ namespace KonusarakOgrenQuiz.Controllers
                 return NotFound();
             }
 
-            var questionList = await _context.questionList.FindAsync(id);
-            if (questionList == null)
+            var wired = await _context.Wired.FindAsync(id);
+            if (wired == null)
             {
                 return NotFound();
             }
-            ViewData["quizId"] = new SelectList(_context.Quiz, "id", "id", questionList.quizId);
-            return View(questionList);
+            return View(wired);
         }
 
-        // POST: QuestionLists/Edit/5
+        // POST: Wireds/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,quizId")] QuestionList questionList)
+        public async Task<IActionResult> Edit(int id, [Bind("id,titles,smallText,details")] Wired wired)
         {
-            if (id != questionList.id)
+            if (id != wired.id)
             {
                 return NotFound();
             }
@@ -122,12 +99,12 @@ namespace KonusarakOgrenQuiz.Controllers
             {
                 try
                 {
-                    _context.Update(questionList);
+                    _context.Update(wired);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuestionListExists(questionList.id))
+                    if (!WiredExists(wired.id))
                     {
                         return NotFound();
                     }
@@ -138,11 +115,10 @@ namespace KonusarakOgrenQuiz.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["quizId"] = new SelectList(_context.Quiz, "id", "id", questionList.quizId);
-            return View(questionList);
+            return View(wired);
         }
 
-        // GET: QuestionLists/Delete/5
+        // GET: Wireds/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,31 +126,30 @@ namespace KonusarakOgrenQuiz.Controllers
                 return NotFound();
             }
 
-            var questionList = await _context.questionList
-                .Include(q => q.quiz)
+            var wired = await _context.Wired
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (questionList == null)
+            if (wired == null)
             {
                 return NotFound();
             }
 
-            return View(questionList);
+            return View(wired);
         }
 
-        // POST: QuestionLists/Delete/5
+        // POST: Wireds/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var questionList = await _context.questionList.FindAsync(id);
-            _context.questionList.Remove(questionList);
+            var wired = await _context.Wired.FindAsync(id);
+            _context.Wired.Remove(wired);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool QuestionListExists(int id)
+        private bool WiredExists(int id)
         {
-            return _context.questionList.Any(e => e.id == id);
+            return _context.Wired.Any(e => e.id == id);
         }
     }
 }

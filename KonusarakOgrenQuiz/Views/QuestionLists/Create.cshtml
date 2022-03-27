@@ -13,18 +13,23 @@
         <form asp-action="AddQuestion" method="post">
 
             <div class="form-group" id="item-list">
-                <a href="#" id="add">Add</a>
+                <a href="#" id="addQuestion">Add</a>
                 <br />
-                <input type="text" asp-for="questions[0]" class="items" name="questions[0].Question" />
-                <input type="text" asp-for="questions[0]" class="items" name="questions[0].answer1" />
-                <input type="text" asp-for="questions[0]" class="items" name="questions[0].answer2" />
-                <input type="text" asp-for="questions[0]" class="items" name="questions[0].answer3" />
-                <input type="text" asp-for="questions[0]" class="items" name="questions[0].answer4" />
-                <input type="number" asp-for="questions[0]" class="items" name="questions[0].trueAnswer" />
+                <label>Question</label>
+                <input type="text" asp-for="questions[0]" id="items" class="items form-control" name="questions[0].Question" />
+                <label>Answer 1</label>
+                <input type="text" asp-for="questions[0]"  id="items"class="items form-control" name="questions[0].answer1" />
+                <label>Answer 2</label>
+                <input type="text" asp-for="questions[0]" id="items" class="items form-control" name="questions[0].answer2" />
+                <label>Answer 3</label>
+                <input type="text" asp-for="questions[0]" id="items" class="items form-control" name="questions[0].answer3" />
+                <label>Answer 4</label>
+                <input type="text" asp-for="questions[0]" id="items" class="items form-control" name="questions[0].answer4" />
+                <label>Correct Answer</label>
+                <input type="number" asp-for="questions[0]" id="items" class="items form-control" name="questions[0].trueAnswer" />
             </div>
             <div class="form-group">
-                <label asp-for="quizId" class="control-label"></label>
-                <select asp-for="quizId" class="form-control" asp-items="ViewBag.quizId"></select>
+                <select asp-for="quizId" class="form-control" asp-items="ViewBag.quizId" style="display:none"></select>
 
             </div>
             <div class="form-group">
@@ -41,15 +46,15 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(function () {
-        $("#add").click(function (e) {
+        $("#addQuestion").click(function (e) {
             e.preventDefault();
             var i = ($(".items").length) / 6;
-            var n = '<br/>' + '<input type="text" class="items" name="questions[' + i + '].Question" />' +
-                '<input type="text" class="items" name="questions[' + i + '].answer1" />' +
-                '<br/>' +'<input type="text" class="items" name="questions[' + i + '].answer2"/>' +
-                '<br/>' +'<input type="text" class="items" name="questions[' + i + '].answer3"/>' +
-                '<br/>' +'<input type="text" class="items" name="questions[' + i + '].answer4"/>' +
-                '<br/>' +'<input type="number" class="items" name="questions[' + i + '].trueAnswer"/>'+'<br/><br/>';
+            var n = '<br/>' + '<label>Question</label>' + '<input type="text" class="items form-control" name="questions[' + i + '].Question" />' + '<label>Answer 1</label>'+
+                '<input type="text" class="items form-control" name="questions[' + i + '].answer1" />' + '<label>Answer 2</label>'+
+            '<br/>' + '<input type="text" class="items form-control" name="questions[' + i + '].answer2"/>' + '<label>Answer 3</label>'+
+            '<br/>' + '<input type="text" class="items form-control" name="questions[' + i + '].answer3"/>' + '<label>Answer 4</label>'+
+            '<br/>' + '<input type="text" class="items form-control" name="questions[' + i + '].answer4"/>' + '<label>Correct Answer</label>'+
+                '<br/>' +'<input type="number" class="items form-control" name="questions[' + i + '].trueAnswer"/>'+'<br/><br/>';
 
             $("#item-list").append(n);
         });

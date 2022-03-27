@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KonusarakOgrenQuiz.Data;
 using KonusarakOgrenQuiz.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KonusarakOgrenQuiz.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class QuizsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -56,9 +58,27 @@ namespace KonusarakOgrenQuiz.Controllers
         }
 
         // GET: Quizs/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
-            ViewData["wiredId"] = new SelectList(_context.Wired, "id", "id");
+            if (id != null) { 
+                int wid = Int32.Parse(id);
+                var wiredT = _context.Wired.Where(x => x.id == wid).ToList();
+            
+                if (wiredT != null)
+                    ViewData["wiredId"] = new SelectList(wiredT, "id", "titles");
+            }
+            else if (id == null)
+            {
+                var wiredT = _context.Wired.ToList();
+                if (wiredT != null)
+                {
+                    ViewData["wiredId"] = new SelectList(wiredT, "id", "titles");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index");             
+            }
             return View();
         }
 
@@ -75,7 +95,7 @@ namespace KonusarakOgrenQuiz.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["wiredId"] = new SelectList(_context.Wired, "id", "id", quiz.wiredId);
+            ViewData["wiredId"] = new SelectList(_context.Wired, "id", "titles", quiz.wiredId);
             return View(quiz);
         }
 

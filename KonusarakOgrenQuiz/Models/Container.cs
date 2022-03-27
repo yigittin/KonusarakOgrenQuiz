@@ -7,7 +7,9 @@ namespace KonusarakOgrenQuiz.Models
 {
     public class Container
     {
-        public Questions questions { get; set; }
-        public Wired wired { get; set; }
+        public IEnumerable<Quiz>quiz { get; set; }
+        public IEnumerable<Wired> wired { get; set; }
+
+        public IEnumerable<Questions> questions { get; set; }
     }
 }

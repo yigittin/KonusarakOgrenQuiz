@@ -1,4 +1,5 @@
 ﻿using KonusarakOgrenQuiz.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace KonusarakOgrenQuiz.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -21,5 +22,6 @@ namespace KonusarakOgrenQuiz.Data
         public DbSet<KonusarakOgrenQuiz.Models.Wired> Wired { get; set; }
 
         public DbSet<KonusarakOgrenQuiz.Models.Quiz> Quiz { get; set; }
+        
     }
 }

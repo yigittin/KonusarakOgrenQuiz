@@ -1,0 +1,31 @@
+﻿@model KonusarakOgrenQuiz.Models.Container
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>View</tr>
+    </thead>
+    <tbody>
+       
+            @foreach (var item in Model.quiz)
+            {
+            <tr>
+                <td>
+                    @item.wired.titles
+                </td>
+                <td>
+                    <a href="/QuizPage/Quiz/@item.id" class="btn btn-success btn-sm">Go To Quiz</a>
+
+                </td> 
+            </tr>
+             }
+
+           
+
+</tbody>
+</table>
+
